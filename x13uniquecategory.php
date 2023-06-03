@@ -59,7 +59,9 @@ class X13uniquecategory extends Module
     public function install()
     {
         Configuration::updateValue('X13UNIQUECATEGORY_LIVE_MODE', false);
-
+        
+        include(dirname(__FILE__) . '/sql/install.php');
+        
         return parent::install() &&
             $this->registerHook('actionCategoryGridDefinitionModifier');
     }
