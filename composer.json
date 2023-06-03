@@ -1,0 +1,28 @@
+{
+    "name": "Patryk Nietyksza/X13uniquecategory",
+    "description": "Prestahop module for unique category",
+    "authors": [
+        {
+            "name": "Patryk Nietyksza",
+            "email": "patryk.nietyksza@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PrestaShop\\Module\\X13uniquecategory\\": "src/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "prepend-autoloader": false
+    },
+    "type": "prestashop-module",
+    "author": "Patryk Nietyksza",
+    "license": "apache-2.0"
+}
