@@ -25,9 +25,11 @@
 */
 $sql = array();
 
-$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'x13uniquecategory` (
-    `id_x13uniquecategory` int(11) NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY  (`id_x13uniquecategory`)
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'unique_category` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `is_unique_category` tinyint(11) NOT NULL DEFAULT \'0\',
+    `id_category` int(11) NOT NULL,
+    PRIMARY KEY  (`id`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
 foreach ($sql as $query) {
