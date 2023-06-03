@@ -1,20 +1,20 @@
 <?php
 
-declare (strict_types=1);
-
 namespace PrestaShop\Module\X13uniquecategory\Controller;
 
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController as AdminController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Common\Cache\CacheProvider;
 
 class UniqueCategoryController extends AdminController
 {
     public function __construct()
     {
-        dump('This is contruictor of UniqueCategoryController');
-        exit;
+
     }
-    public function checkCategoryIsUnique() : int
+    public function checkCategoryIsUnique(Request $request) : Response
     {
-        return 0;
+        return (new Response);
     }
 }
