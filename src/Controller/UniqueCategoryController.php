@@ -5,16 +5,51 @@ namespace PrestaShop\Module\X13uniquecategory\Controller;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController as AdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\Common\Cache\CacheProvider;
+use PrestaShop\Module\X13uniquecategory\Entity\UniqueCategory;
 
 class UniqueCategoryController extends AdminController
 {
     public function __construct()
     {
-
     }
-    public function checkCategoryIsUnique(Request $request) : Response
+    public function checkCategoryIsUnique(Request $request, $categoryId): Response
     {
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        $uniqueCategoryRepository = $entityManager->getRepository(UniqueCategory::class);
+        $uniqueCategories = $uniqueCategoryRepository->findAll();
+
+        $uniqueCategory = $uniqueCategoryRepository->findByIdCategory($categoryId);
+
+        return (new Response);
+    }
+
+    public function changeStatus(Request $request, $categoryId): Response
+    {
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        $uniqueCategoryRepository = $entityManager->getRepository(UniqueCategory::class);
+
+        $uniqueCategory = $uniqueCategoryRepository->findByIdCategory($categoryId);
+
+        if (empty($uniqueCategory)) {
+            $createUniqueCategory = new UniqueCategory();
+            $createUniqueCategory->setIdCategory($categoryId);
+            $createUniqueCategory->setIsUnique(1);
+            $entityManager->persist($createUniqueCategory);
+            $entityManager->flush();
+        } else {
+            $uniqueCategoryObject = $uniqueCategory[0];
+            $isUnique = $uniqueCategoryObject->getIsUnique();
+            if ($isUnique) {
+                $uniqueCategoryObject->setIsUnique(0);
+                $entityManager->persist($uniqueCategoryObject);
+                $entityManager->flush();
+            } else {
+                $uniqueCategoryObject->setIsUnique(1);
+                $entityManager->persist($uniqueCategoryObject);
+                $entityManager->flush();
+            }
+        }
+
         return (new Response);
     }
 }
