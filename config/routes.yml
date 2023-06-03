@@ -1,0 +1,6 @@
+check_category_is_unique:
+  path: x13-unique-category/uniquecategorycontroller
+  methods: [GET,POST]
+  defaults:
+    _controller: 'PrestaShop\Module\X13uniquecategory\Controller\UniqueCategoryController::checkCategoryIsUnique'
+    _disable_module_prefix: true
