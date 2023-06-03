@@ -28,6 +28,12 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\ToggleColumn;
+use PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinitionInterface;
+use PrestaShopBundle\Form\Admin\Type\YesAndNoChoiceType;
+use PrestaShop\PrestaShop\Core\Grid\Filter\Filter;
+
 class X13uniquecategory extends Module
 {
     protected $config_form = false;
@@ -55,8 +61,7 @@ class X13uniquecategory extends Module
         Configuration::updateValue('X13UNIQUECATEGORY_LIVE_MODE', false);
 
         return parent::install() &&
-            $this->registerHook('header') &&
-            $this->registerHook('displayBackOfficeHeader');
+            $this->registerHook('actionCategoryGridDefinitionModifier');
     }
 
     public function uninstall()
@@ -64,5 +69,37 @@ class X13uniquecategory extends Module
         Configuration::deleteByName('X13UNIQUECATEGORY_LIVE_MODE');
 
         return parent::uninstall();
+    }
+
+    protected function generateControllerURI()
+    {
+           $router = SymfonyContainer::getInstance()->get('router');
+
+           return $router->generate('check_category_is_unique');
+    }
+
+    public function hookActionCategoryGridDefinitionModifier($params)
+    {
+        /** @var GridDefinitionInterface $definition */
+        $definition = $params['definition'];
+        $translator = $this->getTranslator();
+
+        $definition
+            ->getColumns()
+            ->addAfter(
+                'position',
+                (new ToggleColumn('is_unique_category'))
+                ->setName($translator->trans('Special category', [], 'Modules.X13uniquecategory'))
+                ->setOptions([
+                    'field' => 'is_unique_category',
+                    'primary_field' => 'id_category',
+                    'route' => 'check_category_is_unique',
+                    'route_param_name' => 'categoryId',
+                ])
+            );
+        $definition->getFilters()->add(
+            (new Filter('is_unique_category', YesAndNoChoiceType::class))
+                ->setAssociatedColumn('is_unique_category')
+        );
     }
 }
