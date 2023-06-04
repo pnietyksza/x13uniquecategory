@@ -6,24 +6,12 @@ use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController as AdminCon
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PrestaShop\Module\X13uniquecategory\Entity\UniqueCategory;
+use PrestaShop\PrestaShop\Core\Search\Filters\CategoryFilters;
+
 
 class UniqueCategoryController extends AdminController
 {
-    public function __construct()
-    {
-    }
-    public function checkCategoryIsUnique(Request $request, $categoryId): Response
-    {
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
-        $uniqueCategoryRepository = $entityManager->getRepository(UniqueCategory::class);
-        $uniqueCategories = $uniqueCategoryRepository->findAll();
-
-        $uniqueCategory = $uniqueCategoryRepository->findByIdCategory($categoryId);
-
-        return (new Response);
-    }
-
-    public function changeStatus(Request $request, $categoryId): Response
+    public function changeStatus(Request $request, $categoryId, CategoryFilters $filters): Response
     {
         $entityManager = $this->container->get('doctrine.orm.entity_manager');
         $uniqueCategoryRepository = $entityManager->getRepository(UniqueCategory::class);
@@ -49,7 +37,10 @@ class UniqueCategoryController extends AdminController
                 $entityManager->flush();
             }
         }
+        $response = new Response();
+        $response->setContent(json_encode([]));
+        $response->headers->set('Content-Type', 'application/json');
 
-        return (new Response);
+        return $response;
     }
 }

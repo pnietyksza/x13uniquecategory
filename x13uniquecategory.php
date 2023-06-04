@@ -76,6 +76,8 @@ class X13uniquecategory extends Module
     {
         Configuration::deleteByName('X13UNIQUECATEGORY_LIVE_MODE');
 
+        include(dirname(__FILE__) . '/sql/uninstall.php');
+
         return parent::uninstall();
     }
 
@@ -114,8 +116,6 @@ class X13uniquecategory extends Module
 
     public function hookActionCategoryGridQueryBuilderModifier($params)
     {
-        dump($params);
-
         /** @var QueryBuilder $searchQueryBuilder */
         $searchQueryBuilder = $params['search_query_builder'];
 
