@@ -15,7 +15,8 @@
             "PrestaShop\\Module\\X13uniquecategory\\": "src/"
         },
         "classmap": [
-            "src/"
+            "Controller/",
+            "Entity/"
         ]
     },
     "config": {
