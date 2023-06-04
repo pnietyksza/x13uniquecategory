@@ -116,8 +116,6 @@ class X13uniquecategory extends Module
 
     public function hookActionCategoryGridQueryBuilderModifier($params)
     {
-        dump($params);
-
         /** @var QueryBuilder $searchQueryBuilder */
         $searchQueryBuilder = $params['search_query_builder'];
 
